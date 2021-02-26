@@ -1,0 +1,19 @@
+Converting Pygame code into an executable file:
+
+The reason why you may want to convert your game into an executable is so that you can share it with 
+people who may not have PyGame or Python installed. I did a research to understand how the 
+convertion of pygame code to an executable file happens and found the way to do so.
+
+First, install pyinstaller.
+
+Open Windows Command Prompt, type:
+pip install pyinstaller
+
+Second, When your game is ready to be wrapped in an .exe, open Windows Command Prompt. Go to the main game directory
+
+H:\CSE442\The_buffalo_trail
+ 
+and type "pyinstaller --onefile -w app.py to covert game into an executable.
+
+"-w" ----> To avoid the pop up console.
+"--onefile"----------> to create everything in one executable file.
