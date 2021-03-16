@@ -1,5 +1,6 @@
 import pygame
 
+
 class Text:
     def __init__(self, text, x, y, text_size, color):
         self.text = text

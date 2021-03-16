@@ -1,7 +1,9 @@
 import pygame
 from pygame.locals import *
 
+
 class Button:
+
     def __init__(self, x, y, width, height, color, clicked, function):
         self.x = x
         self.y = y
@@ -9,6 +11,13 @@ class Button:
         self.height = height
         self.color = color
         self.clicked = clicked
+        self.function = function
+        self.changed = False
+        self.previous_color = (0, 0, 0)
+        self.sfx_multiplier = 1.0
+        self.music_multiplier = 1.0
+
+    def set_function(self, function):
         self.function = function
 
     def draw(self, screen):
@@ -25,24 +34,31 @@ class Button:
         # Import click sfx
         click_down = pygame.mixer.Sound('assets/menu_down.wav')
         click_up = pygame.mixer.Sound('assets/menu_up.wav')
+        click_up.set_volume(self.sfx_multiplier)
+        click_down.set_volume(self.sfx_multiplier)
 
+        red, blue, green = self.color
+        self.previous_color = self.color
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             if self.hovers(mx, my):
                 click_down.play()
-                self.color = (105, 105, 105)
+                self.color = (red - 30, blue - 30, green - 30)
                 self.clicked = True
+
         if event.type == MOUSEBUTTONUP and event.button == 1:
             if self.clicked:
                 if self.hovers(mx, my):
                     click_up.play()
                     self.function()
                 self.clicked = False
-                self.color = (192, 192, 192)
+
         if event.type == MOUSEMOTION:
             if self.hovers(mx, my):
-                if not self.clicked:
-                    self.color = (128, 128, 128)
-                else:
-                    self.color = (105, 105, 105)
+                if not self.changed:
+                    if not self.clicked:
+                        self.color = (red + 30, blue + 30, green + 30)
+                    else:
+                        self.color = (red - 30, blue - 30, green - 30)
+                    self.changed = True
             else:
-                self.color = (192, 192, 192)
+                self.color = self.previous_color
