@@ -17,7 +17,7 @@ music_list = [type(Button), type(Button), type(Button), type(Button), type(Butto
 sfx_volume = 1
 music_volume = 1
 first_time_options = True
-
+interact_text = type(Text)
 
 def main_menu():
     # Instantiate game title header
@@ -282,6 +282,16 @@ def update_music_10():
     pygame.display.update()
 
 
+def update_interact():
+    global interact_text
+    check_key = True
+    while check_key:
+        for event in  pygame.event.get(pygame.KEYDOWN):
+            interact_text.text = pygame.key.name(event.key).upper()
+            check_key = False
+    pygame.display.update()
+
+
 def options():
     options_header = Text('Options', width / 2, 80, 125, (255, 255, 255))
 
@@ -357,8 +367,15 @@ def options():
         music_volume_10 = music_list[9]
 
     # Controls
-    controls = Text('Controls', 210, 600, 80, (255, 255, 255))
+    controls = Text("Controls", 210, 600, 80, (255, 255, 255))
+    interact = Text('Interact', 600, 600, 80, (255, 255, 255))
+    global interact_text
+    if first_time_options:
+        interact_input = Text("E", 900, 600, 80, (0, 0, 0))
+        interact_text = interact_input
 
+    interact_input = interact_text
+    interact_button = Button(875, 575, 50, 50, (255, 255, 255), False, update_interact)
     first_time_options = False
     in_options = True
     while in_options:
@@ -395,6 +412,10 @@ def options():
         music_volume_10.draw(screen)
 
         controls.draw(screen)
+        interact.draw(screen)
+        interact_button.draw(screen)
+        interact_input.draw(screen)
+
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
             # Click X button to quit
@@ -426,6 +447,8 @@ def options():
             music_volume_9.click_button(event, mx, my)
             music_volume_10.click_button(event, mx, my)
 
+            interact_button.click_button(event, mx, my)
+
         pygame.display.update()
 
 
@@ -434,7 +457,7 @@ def play():
     while playing:
         # Set black BG
         screen.fill((16, 16, 16))
-
+        mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
             # Click X button to quit
             if event.type == pygame.QUIT:

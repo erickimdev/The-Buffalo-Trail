@@ -13,7 +13,7 @@ class Button:
         self.clicked = clicked
         self.function = function
         self.changed = False
-        self.previous_color = (0, 0, 0)
+        self.previous_color = color
         self.sfx_multiplier = 1.0
         self.music_multiplier = 1.0
 
@@ -38,7 +38,6 @@ class Button:
         click_down.set_volume(self.sfx_multiplier)
 
         red, blue, green = self.color
-        self.previous_color = self.color
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             if self.hovers(mx, my):
                 click_down.play()
@@ -49,16 +48,21 @@ class Button:
             if self.clicked:
                 if self.hovers(mx, my):
                     click_up.play()
+                    self.color = self.previous_color
                     self.function()
                 self.clicked = False
 
-        if event.type == MOUSEMOTION:
-            if self.hovers(mx, my):
-                if not self.changed:
-                    if not self.clicked:
-                        self.color = (red + 30, blue + 30, green + 30)
-                    else:
-                        self.color = (red - 30, blue - 30, green - 30)
-                    self.changed = True
-            else:
-                self.color = self.previous_color
+        # if event.type == MOUSEMOTION:
+        #     if self.hovers(mx, my):
+        #         if not self.changed:
+        #             self.previous_color = self.color
+        #             if not self.clicked:
+        #                 self.color = (red + 30, blue + 30, green + 30)
+        #             else:
+        #                 self.color = (red - 30, blue - 30, green - 30)
+        #             self.changed = True
+        #         else:
+        #             self.color = self.previous_color
+        #             self.changed = False
+        #     else:
+        #         self.color = self.previous_color
