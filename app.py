@@ -19,6 +19,7 @@ music_volume = 1
 first_time_options = True
 interact_text = type(Text)
 
+
 def main_menu():
     # Instantiate game title header
     title_y = 135
@@ -286,7 +287,7 @@ def update_interact():
     global interact_text
     check_key = True
     while check_key:
-        for event in  pygame.event.get(pygame.KEYDOWN):
+        for event in pygame.event.get(pygame.KEYDOWN):
             interact_text.text = pygame.key.name(event.key).upper()
             check_key = False
     pygame.display.update()
@@ -452,13 +453,63 @@ def options():
         pygame.display.update()
 
 
+def save(args):
+    pass
+
+
+def quit():
+    pygame.quit()
+
+
+def settings():
+    in_settings = True
+    # Resume
+    resume_text = Text('Resume', 650, 110, 80, (0, 0, 0))
+    resume_button = Button(500, 80, 300, 60, (255, 255, 255), False, play)
+    # Save
+    save_text = Text('Save', 650, 250, 80, (0, 0, 0))
+    save_button = Button(500, 220, 300, 60, (255, 255, 255), False, save)
+    # Options
+    options_text = Text('Options', 650, 390, 80, (0, 0, 0))
+    options_button = Button(500, 360, 300, 60, (255, 255, 255), False, options)
+    # Quit
+    quit_text = Text('Quit', 650, 530, 80, (0, 0, 0))
+    quit_button = Button(500, 500, 300, 60, (255, 255, 255), False, quit)
+    while in_settings:
+        screen.fill((16, 16, 16))
+
+        quit_button.draw(screen)
+        quit_text.draw(screen)
+        resume_button.draw(screen)
+        resume_text.draw(screen)
+        save_button.draw(screen)
+        save_text.draw(screen)
+        options_button.draw(screen)
+        options_text.draw(screen)
+
+        for event in pygame.event.get():
+            mx, my = pygame.mouse.get_pos()
+            resume_button.click_button(event, mx, my)
+            save_button.click_button(event, mx, my)
+            options_button.click_button(event, mx, my)
+            quit_button.click_button(event, mx, my)
+
+        pygame.display.update()
+
+
 def play():
     playing = True
+    setting_text = Text('Settings', 800, 100, 20, (0, 0, 0))
+    setting_button = Button(750, 80, 100, 40, (255, 255, 255), False, settings)
+
     while playing:
         # Set black BG
         screen.fill((16, 16, 16))
-        mx, my = pygame.mouse.get_pos()
+        setting_button.draw(screen)
+        setting_text.draw(screen)
+
         for event in pygame.event.get():
+            mx, my = pygame.mouse.get_pos()
             # Click X button to quit
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -466,6 +517,7 @@ def play():
             if event.type == MOUSEBUTTONDOWN and event.button == 3:
                 playing = False
 
+            setting_button.click_button(event, mx, my)
         pygame.time.Clock().tick(30)
         pygame.display.update()
 
