@@ -3,7 +3,7 @@ from pygame.locals import *
 from colors import *
 from text import *
 import shelve
-
+import os
 
 class Button:
     def __init__(self, x, y, width, height, color, clicked, game):
@@ -97,9 +97,14 @@ class Button:
                         self.click_up.play()
                         # change inner difficulty state
                         self.game.difficulty = difficulty
-                        shelfFile =shelve.open('saved data')
-                        shelfFile['difficulty'] = self.game.difficulty
-                        shelfFile.close()
+                       
+                        if os.stat("save.txt").st_size != 0:
+                            file = open("save.txt","a")
+                            file.write("+"+difficulty)
+                        else:
+                            file = open("save.txt","w")
+                            file.write("difficulty="+difficulty)
+                        file.close()
                 # now unclicked
                 self.clicked = False
                 # Unselect the other two difficulty buttons

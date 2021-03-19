@@ -4,7 +4,6 @@ from button import *
 from text import *
 from menu import *
 from play import *
-from letters import *
 
 class Game:
     def __init__(self):
@@ -34,8 +33,7 @@ class Game:
         self.save_conformation = SaveMenuConformation(self)
             # "save"
         self.save_menu = SaveMenu(self)
-            # "username"
-        self.username_menu = Letters(self)
+            
 
         # set current menu to main menu
         self.curr_menu = self.main_menu
@@ -97,7 +95,7 @@ class Game:
             self.paused = True
         # if inner menu state is SaveConformation
         elif self.menu_state == "save":
-            self.curr_menu = self.save
+            self.curr_menu = self.save_menu
             self.paused = True
 
 game = Game()

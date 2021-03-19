@@ -4,7 +4,7 @@ from button import *
 from text import *
 from colors import *
 import shelve
-#from game import *
+import os
 
 #SAVE_DATA = shelve.open('Save Data')
 
@@ -50,7 +50,7 @@ class MainMenu:
 
     def catch_actions(self, event, mx, my):
         # catch PLAY button clicks
-        self.play_button.change_menu(event, mx, my, "username")
+        self.play_button.change_menu(event, mx, my, "play")
 
         # catch OPTIONS button clicks
         self.options_button.change_menu(event, mx, my, "options")
@@ -184,22 +184,32 @@ class LoadMenu:
     def __init__(self, game):
         self.game = game
 
-        self.Load_text = Text('1 file found. Click NEXT to load the file', 700, 200, 50, WHITE)
+        self.Load_text_found = Text('Load   Complete', 700, 200, 50, WHITE)
+        self.Load_text_found1 = Text('Click  Next', 700, 400, 50, WHITE)
+        self.Load_text_notfound = Text('No   Saved   data   available', 700, 200, 50, WHITE)
+
 
         # instantiate BACK TO MAIN MENU button
-        self.back_button = Button(510, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.back_button_text = Text('BACK', 640, 628, 28, BLACK)
+        self.back_button = Button(310, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.back_button_text = Text('BACK', 440, 628, 28, BLACK)
 
-        self.next_button = Button(910, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.next_button_text = Text('NEXT', 940, 628, 28, BLACK)
-        shelfFile =shelve.open('saved data')
-        self.game.difficulty = shelfFile('difficulty')
-        shelfFile.close()
+        self.next_button = Button(710, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.next_button_text = Text('NEXT', 860, 628, 28, BLACK)
 
        # shelfFile = shelve.open('saved data')        
 
     def draw_screen(self):
-        self.Load_text.draw(self.game.screen)
+        if os.stat("save.txt").st_size != 0:
+            self.Load_text_found.draw(self.game.screen)
+            self.Load_text_found1.draw(self.game.screen)
+            file = open("save.txt","r+")
+            content = file.read()
+            content1 = content.split('=')
+            contentFinal = content1[1].split('+')
+            self.game.difficulty = contentFinal[len(contentFinal)-1]
+        else:
+             self.Load_text_notfound.draw(self.game.screen)
+
 
          # BACK button
         self.back_button.draw(self.game.screen)
@@ -219,15 +229,15 @@ class SaveMenuConformation:
     def __init__(self, game):
         self.game = game
 
-        self.conformation_text = Text('Do you want to save the game?', 700, 200, 50, WHITE)
+        self.conformation_text = Text('Do you want to save the game', 700, 200, 50, WHITE)
 
         # instantiate YES button
-        self.yes_button = Button(810, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.yes_button_text = Text('YES', 950, 628, 28, BLACK)
+        self.yes_button = Button(700, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.yes_button_text = Text('YES', 830, 628, 28, BLACK)
 
         # instantiate NO button
-        self.no_button = Button(510, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.no_button_text = Text('NO', 640, 628, 28, BLACK)
+        self.no_button = Button(420, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.no_button_text = Text('NO', 550, 628, 28, BLACK)
 
     def draw_screen(self):
         self.conformation_text.draw(self.game.screen)
@@ -250,20 +260,18 @@ class SaveMenu:
     def __init__(self, game):
         self.game = game
 
-        self.save_text = Text('Under Construction.......', 700, 200, 50, WHITE)
-        
-        self.Back1_button = Button(510, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.Back1_button_text = Text('BACK', 640, 628, 28, BLACK)
+        self.save_text = Text("Saved data ", 700, 200, 50, WHITE)
+        self.Back1_button = Button(560, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.Back1_button_text = Text('BACK', 690, 628, 28, BLACK)
 
     def draw_screen(self):
-        self.save_text.draw(self.game.screen)
-        
-         # BACK button
+        self.save_text.draw(self.game.screen)      
         self.Back1_button.draw(self.game.screen)
         self.Back1_button_text.draw(self.game.screen)
 
 
     def catch_actions(self, event, mx, my):
         self.Back1_button.change_menu(event, mx, my, "play")
+        
         
 
