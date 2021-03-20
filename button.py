@@ -21,15 +21,6 @@ class Button:
         # draw rectangle on screen
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 0)
 
-    def draw_volume(self, screen, vol, multiplier):
-        if vol == "sfx":
-            if self.game.sfx_multiplier >= multiplier:
-                self.color = GREEN
-        if vol == "music":
-            if self.game.music_multiplier >= multiplier:
-                self.color = GREEN
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height), 0)
-
     def hovers(self, mx, my):
         # if mouse is over button
         if self.x < mx < self.x + self.width:
