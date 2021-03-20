@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from button import *
 from text import *
-from menu import *
 
 class Play:
     def __init__(self, game):
