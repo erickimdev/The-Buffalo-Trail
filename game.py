@@ -29,11 +29,10 @@ class Game:
         self.pause_menu = PauseMenu(self)
             # "load"
         self.load_menu = LoadMenu(self)
-            # "save conformation page" 
-        self.save_conformation = SaveMenuConformation(self)
+            # "save confirmation page"
+        self.save_confirmation = SaveMenuConfirmation(self)
             # "save"
         self.save_menu = SaveMenu(self)
-            
 
         # set current menu to main menu
         self.curr_menu = self.main_menu
@@ -45,6 +44,7 @@ class Game:
 
     def loop(self):
         while True:
+            print(self.curr_menu)
             # set black BG
             self.screen.fill((16,16,16))
 
@@ -75,9 +75,6 @@ class Game:
         # if inner menu state is OptionsMenu
         elif self.menu_state == "options":
             self.curr_menu = self.options_menu
-        #enter username
-        elif self.menu_state == "username":
-            self.curr_menu = self.username_menu
         # if inner menu state is OptionsMenu
         elif self.menu_state == "play":
             self.curr_menu = self.gameplay
@@ -86,17 +83,19 @@ class Game:
         elif self.menu_state == "pause":
             self.curr_menu = self.pause_menu
             self.paused = True
+
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":
             self.curr_menu = self.load_menu
-        # if inner menu state is SaveConformation
-        elif self.menu_state == "save conformation":
-            self.curr_menu = self.save_conformation
+        # if inner menu state is SaveConfirmation
+        elif self.menu_state == "save confirmation":
+            self.curr_menu = self.save_confirmation
             self.paused = True
-        # if inner menu state is SaveConformation
+        # if inner menu state is SaveConfirmation
         elif self.menu_state == "save":
             self.curr_menu = self.save_menu
             self.paused = True
+
 
 game = Game()
 while True:

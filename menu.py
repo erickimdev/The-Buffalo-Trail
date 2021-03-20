@@ -3,34 +3,29 @@ from pygame.locals import *
 from button import *
 from text import *
 from colors import *
-import shelve
 import os
 
-#SAVE_DATA = shelve.open('Save Data')
-
-pygame.init()
-font = pygame.font.SysFont("comicsansms", 30)
 class MainMenu:
     def __init__(self, game):
         self.game = game
-
 
         # instantiate game title header
         self.y_offset = 135
         self.the_buffalo = Text('THE BUFFALO', self.game.width / 2, self.y_offset, 75, WHITE)
         self.trail = Text('TRAIL', self.game.width / 2, self.y_offset + 95, 75, WHITE)
 
+        x = 230
         # instantiate PLAY GAME button
-        self.play_button = Button(200, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.play_button_text = Text('PLAY GAME', 340, 628, 28, BLACK)
+        self.play_button = Button(x, 575, 275, 100, LIGHT_GRAY, False, self.game)
+        self.play_button_text = Text('PLAY GAME', x+140, 628, 28, BLACK)
+
+        # instantiate LOAD button
+        self.load_button = Button(x+310, 575, 260, 100, LIGHT_GRAY, False, self.game)
+        self.load_button_text = Text('LOAD GAME', x+440, 628, 28, BLACK)
 
         # instantiate OPTIONS button
-        self.options_button = Button(800, 575, 250, 100, LIGHT_GRAY, False, self.game)
-        self.options_button_text = Text('OPTIONS', 928, 628, 28, BLACK)
-
-         # instantiate LOAD button
-        self.load_button = Button(510, 575, 260, 100, LIGHT_GRAY, False, self.game)
-        self.load_button_text = Text('LOAD', 640, 628, 28, BLACK)
+        self.options_button = Button(x+600, 575, 250, 100, LIGHT_GRAY, False, self.game)
+        self.options_button_text = Text('OPTIONS', x+728, 628, 28, BLACK)
 
     def draw_screen(self):
         # draw game name
@@ -44,7 +39,7 @@ class MainMenu:
             # OPTIONS button
         self.options_button.draw(self.game.screen)
         self.options_button_text.draw(self.game.screen)
-         # LOAD button
+            # LOAD button
         self.load_button.draw(self.game.screen)
         self.load_button_text.draw(self.game.screen)
 
@@ -57,7 +52,7 @@ class MainMenu:
 
         # catch LOAD button clicks
         self.load_button.change_menu(event, mx, my, "load")
-        
+
         # press esc key to quit
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
             pygame.quit()
@@ -110,7 +105,7 @@ class OptionsMenu:
 
     def catch_actions(self, event, mx, my):
         # right click/ESC key goes to MainMenu OR PauseMenu
-        if (event.type == MOUSEBUTTONDOWN and event.button == 3)\
+        if (event.type == MOUSEBUTTONDOWN and event.button == 3) \
                 or (event.type == pygame.KEYDOWN and event.key == K_ESCAPE):
             # if Options clicked from main menu ONLY
             if not self.game.paused:
@@ -170,48 +165,41 @@ class PauseMenu:
         # catch QUIT button click
         self.quit_button.quit(event, mx, my)
         # catch SAVE button click
-        self.save_button.change_menu(event, mx, my, "save conformation")
-
-        #DO SAVE FUNCTIONALITY HERES
-        
+        self.save_button.change_menu(event, mx, my, "save confirmation")
 
         # press esc key to UNPAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
             self.game.menu_state = "play"
 
-    
 class LoadMenu:
     def __init__(self, game):
         self.game = game
 
-        self.Load_text_found = Text('Load   Complete', 700, 200, 50, WHITE)
-        self.Load_text_found1 = Text('Click  Next', 700, 400, 50, WHITE)
-        self.Load_text_notfound = Text('No   Saved   data   available', 700, 200, 50, WHITE)
-
+        self.Load_text_found = Text('GAME LOADED', self.game.width/2, 250, 65, WHITE)
+        self.Load_text_found1 = Text('Click Next', self.game.width/2, 350, 30, WHITE)
+        self.Load_text_notfound = Text('No Save Data Found', self.game.width/2, 200, 50, WHITE)
 
         # instantiate BACK TO MAIN MENU button
-        self.back_button = Button(310, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.back_button_text = Text('BACK', 440, 628, 28, BLACK)
+        self.back_button = Button(378, 575, 220, 85, LIGHT_GRAY, False, self.game)
+        self.back_button_text = Text('BACK', 488, 622, 28, BLACK)
 
-        self.next_button = Button(710, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.next_button_text = Text('NEXT', 860, 628, 28, BLACK)
-
-       # shelfFile = shelve.open('saved data')        
+        self.next_button = Button(675, 575, 220, 85, LIGHT_GRAY, False, self.game)
+        self.next_button_text = Text('NEXT', 785, 622, 28, BLACK)
 
     def draw_screen(self):
         if os.stat("save.txt").st_size != 0:
             self.Load_text_found.draw(self.game.screen)
             self.Load_text_found1.draw(self.game.screen)
-            file = open("save.txt","r+")
+            file = open("save.txt", "r+")
             content = file.read()
             content1 = content.split('=')
             contentFinal = content1[1].split('+')
             self.game.difficulty = contentFinal[len(contentFinal)-1]
         else:
-             self.Load_text_notfound.draw(self.game.screen)
+            self.Load_text_notfound.draw(self.game.screen)
 
 
-         # BACK button
+        # BACK button
         self.back_button.draw(self.game.screen)
         self.back_button_text.draw(self.game.screen)
 
@@ -223,55 +211,49 @@ class LoadMenu:
         self.back_button.change_menu(event, mx, my, "main")
         self.next_button.change_menu(event, mx, my, "play")
 
-
-
-class SaveMenuConformation:
+class SaveMenuConfirmation:
     def __init__(self, game):
         self.game = game
 
-        self.conformation_text = Text('Do you want to save the game', 700, 200, 50, WHITE)
-
-        # instantiate YES button
-        self.yes_button = Button(700, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.yes_button_text = Text('YES', 830, 628, 28, BLACK)
+        self.confirmation_text = Text('Save Game?', self.game.width/2, 230, 65, WHITE)
 
         # instantiate NO button
-        self.no_button = Button(420, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.no_button_text = Text('NO', 550, 628, 28, BLACK)
+        self.no_button = Button(378, 575, 220, 85, LIGHT_GRAY, False, self.game)
+        self.no_button_text = Text('NO', 488, 622, 28, BLACK)
+
+        # instantiate YES button
+        self.yes_button = Button(675, 575, 220, 85, LIGHT_GRAY, False, self.game)
+        self.yes_button_text = Text('YES', 785, 622, 28, BLACK)
 
     def draw_screen(self):
-        self.conformation_text.draw(self.game.screen)
+        self.confirmation_text.draw(self.game.screen)
 
-         # YES button
+        # YES button
         self.yes_button.draw(self.game.screen)
         self.yes_button_text.draw(self.game.screen)
 
-         # NO button 
+        # NO button
         self.no_button.draw(self.game.screen)
         self.no_button_text.draw(self.game.screen)
 
     def catch_actions(self, event, mx, my):
-        # catch No button clicks
+        # catch NO button clicks
         self.no_button.change_menu(event, mx, my, "pause")
-        # catch Yes button clicks
+        # catch YES button clicks
         self.yes_button.change_menu(event, mx, my, "save")
 
 class SaveMenu:
     def __init__(self, game):
         self.game = game
 
-        self.save_text = Text("Saved data ", 700, 200, 50, WHITE)
-        self.Back1_button = Button(560, 575, 275, 100, LIGHT_GRAY, False, self.game)
-        self.Back1_button_text = Text('BACK', 690, 628, 28, BLACK)
+        self.save_text = Text("GAME SAVED", self.game.width/2, 200, 65, WHITE)
+        self.Back1_button = Button(530, 575, 270, 100, LIGHT_GRAY, False, self.game)
+        self.Back1_button_text = Text('BACK', 670, 628, 28, BLACK)
 
     def draw_screen(self):
-        self.save_text.draw(self.game.screen)      
+        self.save_text.draw(self.game.screen)
         self.Back1_button.draw(self.game.screen)
         self.Back1_button_text.draw(self.game.screen)
 
-
     def catch_actions(self, event, mx, my):
         self.Back1_button.change_menu(event, mx, my, "play")
-        
-        
-

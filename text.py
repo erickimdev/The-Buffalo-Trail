@@ -9,7 +9,7 @@ class Text:
         self.color = color
 
     def draw(self, screen):
-        font = pygame.font.Font('assets/font.ttf', self.text_size)
+        font = pygame.font.Font('assets/8bitfont.ttf', self.text_size)
         text_surface = font.render(self.text, True, self.color)
         text_rect = text_surface.get_rect()
         text_rect.center = (self.x, self.y)

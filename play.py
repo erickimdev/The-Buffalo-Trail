@@ -4,12 +4,12 @@ from button import *
 from text import *
 from menu import *
 
-
 class Play:
     def __init__(self, game):
         self.game = game
+
         # instantiate random text
-        self.random_text = Text('Under construction.........', 700, 300, 55, WHITE)
+        self.random_text = Text('SAMPLE TEXT', 500, 300, 75, WHITE)
 
         # instantiate PAUSE GAME button
         self.pause_button = Button(10, 10, 35, 35, (210,210,210), False, self.game)
@@ -17,13 +17,14 @@ class Play:
 
     def draw_screen(self):
         # draw random
-        self.random_text.draw(self.game.screen) 
+        self.random_text.draw(self.game.screen)
+
         # draw PAUSE button
         self.pause_button.draw(self.game.screen)
-        self.pause_button_text.draw(self.game.screen)    
+        self.pause_button_text.draw(self.game.screen)
 
     def catch_actions(self, event, mx, my):
-        # catch PAUSE button clicks
+        # catch PLAY button clicks
         self.pause_button.change_menu(event, mx, my, "pause")
 
         # press esc key to PAUSE
