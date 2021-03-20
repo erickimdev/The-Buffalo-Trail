@@ -9,7 +9,7 @@ class Play:
         self.game = game
 
         # instantiate random text
-        self.random_text = Text('SAMPLE TEXT', 500, 300, 75, WHITE)
+        self.random_text = Text('GAME UNDER CONSTRUCTION', self.game.width/2, 300, 50, WHITE)
 
         # instantiate PAUSE GAME button
         self.pause_button = Button(10, 10, 35, 35, (210,210,210), False, self.game)

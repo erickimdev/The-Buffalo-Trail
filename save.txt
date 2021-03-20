@@ -1,1 +1,4 @@
-difficulty=easy
+difficulty=hard
+sfx=1.0
+music=0.2
+=======

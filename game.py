@@ -2,8 +2,11 @@ import pygame
 from pygame.locals import *
 from button import *
 from text import *
-from menu import *
 from play import *
+from menus import mainMenu
+from menus import optionsMenu
+from menus import pauseMenu
+from menus import save_loadMenu
 
 class Game:
     def __init__(self):
@@ -18,33 +21,34 @@ class Game:
         # set difficulty - easy, medium, hard
         self.difficulty = "medium"
 
-        # instantiate game's menus
+        # instantiate game's menu
             # "main"
-        self.main_menu = MainMenu(self)
+        self.main_menu = mainMenu.MainMenu(self)
             # "options"
-        self.options_menu = OptionsMenu(self)
+        self.options_menu = optionsMenu.OptionsMenu(self)
             # "play"
         self.gameplay = Play(self)
             # "pause"
-        self.pause_menu = PauseMenu(self)
+        self.pause_menu = pauseMenu.PauseMenu(self)
             # "load"
-        self.load_menu = LoadMenu(self)
-            # "save confirmation page"
-        self.save_confirmation = SaveMenuConfirmation(self)
+        self.load_menu = save_loadMenu.LoadMenu(self)
+            # "save_confirm"
+        self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self)
             # "save"
-        self.save_menu = SaveMenu(self)
-
-        # set current menu to main menu
-        self.curr_menu = self.main_menu
-        # set current menu state to main menu (this is the one you change)
+        self.save_menu = save_loadMenu.SaveMenu(self)
+        # set current menu state to main menu (the string is the one you change)
         self.menu_state = "main"
+        self.curr_menu = self.main_menu
 
         # check if the game is paused
         self.paused = False
 
+        # set sfx and music multiplier
+        self.sfx_multiplier = 0.5
+        self.music_multiplier = 0.5
+
     def loop(self):
         while True:
-            print(self.curr_menu)
             # set black BG
             self.screen.fill((16,16,16))
 
@@ -88,7 +92,7 @@ class Game:
         elif self.menu_state == "load":
             self.curr_menu = self.load_menu
         # if inner menu state is SaveConfirmation
-        elif self.menu_state == "save confirmation":
+        elif self.menu_state == "save_confirm":
             self.curr_menu = self.save_confirmation
             self.paused = True
         # if inner menu state is SaveConfirmation

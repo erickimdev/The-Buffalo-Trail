@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from colors import *
 from text import *
+import os
 
 class Button:
     def __init__(self, x, y, width, height, color, clicked, game):
@@ -12,7 +13,6 @@ class Button:
         self.color = color
         self.clicked = clicked
         self.game = game
-        self.username = ''
 
         self.click_down = pygame.mixer.Sound('assets/menu_down.wav')
         self.click_up = pygame.mixer.Sound('assets/menu_up.wav')
@@ -58,19 +58,39 @@ class Button:
                         # save difficulty
                         difficulty = "difficulty="
                         difficulty += str(self.game.difficulty)
-                        f.write(difficulty)
+                        f.write(difficulty + "\n")
+
+                        # save sfx mulitiplier
+                        sfx = "sfx="
+                        sfx += str(self.game.sfx_multiplier)
+                        f.write(sfx + "\n")
+
+                        # save music mulitiplier
+                        sfx = "music="
+                        sfx += str(self.game.music_multiplier)
+                        f.write(sfx + "\n")
 
                         f.close()
 
                     # if loading game
                     elif state == "load":
-                        f = open("save.txt", "r")
+                        # make sure that txt file is not empty
+                        if os.stat("save.txt").st_size != 0:
+                            f = open("save.txt", "r")
 
-                        # load difficulty
-                        change = f.read().split("=")
-                        self.game.difficulty = change[1]
+                            # load difficulty
+                            lines = f.read().split("\n")
+                            lines.pop()
+                            for i in lines:
+                                string = i.split("=")
+                                if string[0] == "difficulty":
+                                    self.game.difficulty = string[1]
+                                elif string[0] == "sfx":
+                                    self.game.sfx_multiplier = float(string[1])
+                                elif string[0] == "music":
+                                    self.game.music_multiplier = float(string[1])
 
-                        f.close()
+                            f.close()
 
                 # now unclicked
                 self.clicked = False
@@ -196,6 +216,36 @@ class Button:
                     self.click_up.play()
                     # change inner difficulty state
                     pygame.quit()
+
+        # mouse movement action
+        if event.type == MOUSEMOTION:
+            # if mouse currently above button
+            if self.hovers(mx, my):
+                # if just hovering (no click), turn gray
+                if not self.clicked:
+                    self.color = GRAY
+                # if hovering AND clicked, turn dark gray (selected)
+                else:
+                    self.color = DARK_GRAY
+            # untouched buttons should always be gray
+            else:
+                self.color = LIGHT_GRAY
+
+    def change_volume(self, event, mx, my, vol, multiplier):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+                # set button dark (currently clicked)
+                self.color = DARK_GRAY
+                # change sfx volume
+                if vol == "sfx":
+                    self.game.sfx_multiplier = multiplier
+                # change music volume
+                elif vol == "music":
+                    self.game.music_multiplier = multiplier
 
         # mouse movement action
         if event.type == MOUSEMOTION:
