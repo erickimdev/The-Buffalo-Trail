@@ -16,10 +16,15 @@ class Play:
         # instantiate PAUSE GAME button
         self.pause_button = Button(10, 10, 35, 35, (210, 210, 210), False, self.game)
         self.pause_button_text = Text('II', 29, 29, 27, BLACK)
-
+        
         # "major stop"
         self.major_stops_button = Button(100, 10, 60, 60, WHITE, False, self.game)
         self.major_stops_text = Text("Major", 120, 20, 20, BLACK)
+
+         # instantiate Talk_to_stranger button
+        self.Pit_stop_button = Button(1100, 10, 160, 30, LIGHT_GRAY, False, self.game)
+        self.Pit_stop_button_text = Text('Pit Stop', 1180, 27, 13, BLACK)
+
 
     def draw_screen(self):
         # draw random
@@ -36,11 +41,20 @@ class Play:
         self.major_stops_button.draw(self.game.screen)
         self.major_stops_text.draw(self.game.screen)
 
+        # draw Talk_to_stranger button
+        self.Pit_stop_button.draw(self.game.screen)
+        self.Pit_stop_button_text.draw(self.game.screen)
+
+
     def catch_actions(self, event, mx, my):
         # catch PLAY button clicks
         self.pause_button.change_menu(event, mx, my, "pause")
 
+
         self.major_stops_button.change_menu(event, mx, my, "major")
+
+        self.Pit_stop_button.change_menu(event, mx, my, "pitStop")
+
         # press esc key to PAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
             self.game.menu_state = "pause"

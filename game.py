@@ -10,10 +10,14 @@ from menus import mainMenu
 from menus import optionsMenu
 from menus import pauseMenu
 from menus import save_loadMenu
+from menus import pitStop
+from menus import talkToStranger
+from Strangers import stranger1
+from Strangers import stranger2
+from Strangers import stranger3
 from menus import jobsPopUp
 
 MINOREVENT = 3
-
 
 class Game:
     def __init__(self):
@@ -46,6 +50,14 @@ class Game:
         self.save_menu = save_loadMenu.SaveMenu(self)
 
         self.jobs_menu = jobsPopUp.JobsPopUp(self)
+
+               # "pit stop"
+        self.Pit_Stop_menu = pitStop.PitStop(self)
+            # "Talk to stranger"
+        self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self)
+        self.Firststranger = stranger1.Stranger(self)
+        self.Secondstranger = stranger2.Stranger(self)
+        self.Thirdstranger = stranger3.Stranger(self) 
 
         # set current menu state to main menu (the string is the one you change)
         self.menu_state = "main"
@@ -134,7 +146,28 @@ class Game:
         elif self.menu_state != "play" and self.prev_state == "play":  # if coming back to play page
             self.popUp.not_in_play()
             self.prev_state = "whatever"
+            
+         # if inner menu state is Pit Stop
+        elif self.menu_state == "pitStop":
+            self.curr_menu = self.Pit_Stop_menu
+            self.paused = True
 
+            # if inner menu state is talkToStranger
+        elif self.menu_state == "talkToStranger":
+            self.curr_menu = self.talk_to_stranger_menu
+            self.paused = True
+        # if inner menu state is talkToStranger
+        elif self.menu_state == "stranger1":
+            self.curr_menu = self.Firststranger
+            self.paused = True
+        # if inner menu state is talkToStranger
+        elif self.menu_state == "stranger2":
+            self.curr_menu = self.Secondstranger
+            self.paused = True
+        # if inner menu state is talkToStranger
+        elif self.menu_state == "stranger3":
+            self.curr_menu = self.Thirdstranger
+            self.paused = True
 
 game = Game()
 while True:
