@@ -39,6 +39,7 @@ class Button:
 
     def change_menu(self, event, mx, my, state):
         # if left click
+
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             # if mouse is above button
             if self.hovers(mx, my):
