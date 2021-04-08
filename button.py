@@ -269,3 +269,34 @@ class Button:
             # untouched buttons should always be gray
             else:
                 self.color = LIGHT_GRAY
+
+    def change_ui(self, event, mx, my, change):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+
+                if self.game.button_selected != change:
+                    if change == "health":
+                        self.game.button_selected = "health"
+                    elif change == "stats":
+                        self.game.button_selected = "stats"
+                    elif change == "pitstop":
+                        # change inner menu state
+                        self.game.menu_state = "pitstop"
+
+        # mouse movement action
+        # if event.type == MOUSEMOTION:
+        #     # if mouse currently above button
+        #     if self.hovers(mx, my):
+        #         # if just hovering (no click), turn gray
+        #         if not self.clicked:
+        #             self.color = GRAY
+        #         # if hovering AND clicked, turn dark gray (selected)
+        #         else:
+        #             self.color = DARK_GRAY
+        #     # untouched buttons should always be gray
+        #     else:
+        #         self.color = LIGHT_GRAY

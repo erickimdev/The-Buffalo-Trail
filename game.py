@@ -7,6 +7,8 @@ from menus import mainMenu
 from menus import optionsMenu
 from menus import pauseMenu
 from menus import save_loadMenu
+from menus import pitstop
+import time
 
 class Game:
     def __init__(self):
@@ -21,23 +23,33 @@ class Game:
         # set difficulty - easy, medium, hard
         self.difficulty = "medium"
 
+        # GAMEPLAY
+            # current button selected (health, stats, pitstop)
+        self.button_selected = 'health'
+            # car/player healths
+        self.alive = 4
+        self.car_health = 100
+        self.u1_health = 100
+        self.u2_health = 80
+        self.u3_health = 100
+        self.u4_health = 10
+            # stats
+        self.fuel = 40 #gallons
+        self.food = 500 #oz
+        self.traveled = 0 #miles
+        self.miles_left = 400 #miles
+
         # instantiate game's menu
-            # "main"
-        self.main_menu = mainMenu.MainMenu(self)
-            # "options"
-        self.options_menu = optionsMenu.OptionsMenu(self)
-            # "play"
-        self.gameplay = Play(self)
-            # "pause"
-        self.pause_menu = pauseMenu.PauseMenu(self)
-            # "load"
-        self.load_menu = save_loadMenu.LoadMenu(self)
-            # "save_confirm"
-        self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self)
-            # "save"
-        self.save_menu = save_loadMenu.SaveMenu(self)
+        self.main_menu = mainMenu.MainMenu(self) # "main"
+        self.options_menu = optionsMenu.OptionsMenu(self) # "options"
+        self.gameplay = Play(self) # "play"
+        self.pause_menu = pauseMenu.PauseMenu(self) # "pause"
+        self.load_menu = save_loadMenu.LoadMenu(self) # "load"
+        self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self) # "save_confirm"
+        self.save_menu = save_loadMenu.SaveMenu(self) # "save"
+        self.pitstop = pitstop.Pitstop(self) # "pitstop"
         # set current menu state to main menu (the string is the one you change)
-        self.menu_state = "main"
+        self.menu_state = "pitstop"
         self.curr_menu = self.main_menu
 
         # check if the game is paused
@@ -87,6 +99,10 @@ class Game:
         elif self.menu_state == "pause":
             self.curr_menu = self.pause_menu
             self.paused = True
+
+        # if inner menu state is Pitstop
+        elif self.menu_state == "pitstop":
+            self.curr_menu = self.pitstop
 
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":
