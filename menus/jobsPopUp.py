@@ -44,8 +44,6 @@ class JobsPopUp:
         self.solution1_button.change_menu(event, mx, my, "play")
 
         self.solution2_button.change_menu(event, mx, my, "play")
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            self.minor = False
 
 
 
