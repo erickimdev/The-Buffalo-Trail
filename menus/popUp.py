@@ -35,6 +35,12 @@ class Popup:
         self.event_description.draw(self.game.screen)
         self.percentage.draw(self.game.screen)
 
+    def currently_in_play(self):
+        pygame.time.set_timer(3, 20000)
+
+    def not_in_play(self):
+        pygame.time.set_timer(3, 0)
+
     def catch_actions(self, event, mx, my):
         # press esc key to UNPAUSE
         if event.type == pygame.MOUSEBUTTONDOWN:
