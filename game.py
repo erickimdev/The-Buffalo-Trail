@@ -11,9 +11,9 @@ from menus import pitstop
 
 from menus import jobs
 from menus import talkToStranger
-from strangers import stranger1
-from strangers import stranger2
-from strangers import stranger3
+from Strangers import stranger1
+from Strangers import stranger2
+from Strangers import stranger3
 
 class Game:
     def __init__(self):
