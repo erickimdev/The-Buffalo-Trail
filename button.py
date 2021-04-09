@@ -62,44 +62,10 @@ class Button:
 
                     # if saving game
                     if state == "save":
-                        f = open("save.txt", "w")
-
-                        # save difficulty
-                        difficulty = "difficulty="
-                        difficulty += str(self.game.difficulty)
-                        f.write(difficulty + "\n")
-
-                        # save sfx mulitiplier
-                        sfx = "sfx="
-                        sfx += str(self.game.sfx_multiplier)
-                        f.write(sfx + "\n")
-
-                        # save music mulitiplier
-                        sfx = "music="
-                        sfx += str(self.game.music_multiplier)
-                        f.write(sfx + "\n")
-
-                        f.close()
-
+                        self.saveGame()
                     # if loading game
                     elif state == "load":
-                        # make sure that txt file is not empty
-                        if os.stat("save.txt").st_size != 0:
-                            f = open("save.txt", "r")
-
-                            # load difficulty
-                            lines = f.read().split("\n")
-                            lines.pop()
-                            for i in lines:
-                                string = i.split("=")
-                                if string[0] == "difficulty":
-                                    self.game.difficulty = string[1]
-                                elif string[0] == "sfx":
-                                    self.game.sfx_multiplier = float(string[1])
-                                elif string[0] == "music":
-                                    self.game.music_multiplier = float(string[1])
-
-                            f.close()
+                        self.loadGame()
 
                 # now unclicked
                 self.clicked = False
@@ -269,3 +235,93 @@ class Button:
             # untouched buttons should always be gray
             else:
                 self.color = LIGHT_GRAY
+
+    def change_ui(self, event, mx, my, menu, change):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+
+                if menu == "gameplay":
+                    if self.game.button_selected != change:
+                        if change == "health":
+                            self.game.button_selected = "health"
+                        elif change == "stats":
+                            self.game.button_selected = "stats"
+                        elif change == "pitstop":
+                            # change inner menu state
+                            self.game.menu_state = "pitstop"
+                elif menu == "pitstop":
+                    if self.game.pitstop_menu != change:
+                        if change == "party":
+                            self.game.pitstop_menu = "party"
+                        elif change == "supplies":
+                            self.game.pitstop_menu = "supplies"
+
+    def saveGame(self):
+        f = open("save.txt", "w")
+
+        # settings
+        f.write("difficulty=" + str(self.game.difficulty) + "\n")
+        f.write("sfx=" + str(self.game.sfx_multiplier) + "\n")
+        f.write("music=" + str(self.game.music_multiplier) + "\n")
+        # healths
+        f.write("alive=" + str(self.game.alive) + "\n")
+        f.write("u1_health=" + str(self.game.u1_health) + "\n")
+        f.write("u2_health=" + str(self.game.u2_health) + "\n")
+        f.write("u3_health=" + str(self.game.u3_health) + "\n")
+        f.write("u4_health=" + str(self.game.u4_health) + "\n")
+        # stats
+        f.write("traveled=" + str(self.game.traveled) + "\n")
+        f.write("miles_left=" + str(self.game.miles_left) + "\n")
+        # supplies
+        f.write("fuel=" + str(self.game.fuel) + "\n")
+        f.write("food=" + str(self.game.food) + "\n")
+        f.write("money=" + str(self.game.money) + "\n")
+
+        f.close()
+
+    def loadGame(self):
+        # make sure that txt file is not empty
+        if os.stat("save.txt").st_size != 0:
+            f = open("save.txt", "r")
+
+            # load difficulty
+            lines = f.read().split("\n")
+            lines.pop()
+            for i in lines:
+                string = i.split("=")
+                # settings
+                if string[0] == "difficulty":
+                    self.game.difficulty = string[1]
+                elif string[0] == "sfx":
+                    self.game.sfx_multiplier = float(string[1])
+                elif string[0] == "music":
+                    self.game.music_multiplier = float(string[1])
+                # healths
+                elif string[0] == "alive":
+                    self.game.alive = int(string[1])
+                elif string[0] == "u1_health":
+                    self.game.u1_health = int(string[1])
+                elif string[0] == "u2_health":
+                    self.game.u2_health = int(string[1])
+                elif string[0] == "u3_health":
+                    self.game.u3_health = int(string[1])
+                elif string[0] == "u4_health":
+                    self.game.u4_health = int(string[1])
+                # stats
+                elif string[0] == "traveled":
+                    self.game.traveled = int(string[1])
+                elif string[0] == "miles_left":
+                    self.game.miles_left = int(string[1])
+                # supplies
+                elif string[0] == "fuel":
+                    self.game.fuel = int(string[1])
+                elif string[0] == "food":
+                    self.game.food = int(string[1])
+                elif string[0] == "money":
+                    self.game.money = int(string[1])
+
+            f.close()
