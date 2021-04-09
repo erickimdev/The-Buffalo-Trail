@@ -12,7 +12,7 @@ class Pitstop:
         self.campfire = pygame.transform.scale(self.campfire, (475, 257))
 
         x_offset = 100
-        y_offset = 130
+        y_offset = 50
         # instantiate REST button
         self.resume_button = Button(x_offset, y_offset+80, 200, 70, LIGHT_GRAY, False, self.game)
         self.resume_button_text = Text('Rest', x_offset+100, y_offset+115, 30, BLACK)
@@ -20,8 +20,11 @@ class Pitstop:
         self.save_button = Button(x_offset, y_offset+180, 200, 70, LIGHT_GRAY, False, self.game)
         self.save_button_text = Text('Medkit', x_offset+100, y_offset+217, 30, BLACK)
         # instantiate STRANGER button
-        self.options_button = Button(x_offset, y_offset+280, 200, 70, LIGHT_GRAY, False, self.game)
-        self.options_button_text = Text('Stranger', x_offset+100, y_offset+320, 30, BLACK)
+        self.stranger_button = Button(x_offset, y_offset+280, 200, 70, LIGHT_GRAY, False, self.game)
+        self.stranger_button_text = Text('Strangers', x_offset+100, y_offset+320, 27, BLACK)
+        # instantiate JOBS button
+        self.jobs_button = Button(x_offset, y_offset+380, 200, 80, LIGHT_GRAY, False, self.game)
+        self.jobs_button_text = Text('Jobs', x_offset+100, y_offset+420, 30, BLACK)
 
         x_offset2 = 0
         y_offset2 = 640
@@ -29,8 +32,8 @@ class Pitstop:
         self.party_button = Button(x_offset2+70, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
         self.party_button_text = Text('Party', x_offset2+170, y_offset2+43, 30, BLACK)
         # instantiate SUPPLIES button
-        self.supplies_button = Button(x_offset2+340, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
-        self.supplies_button_text = Text('Supplies', x_offset2+440, y_offset2+43, 30, BLACK)
+        self.supplies_button = Button(x_offset2+300, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
+        self.supplies_button_text = Text('Supplies', x_offset2+400, y_offset2+43, 30, BLACK)
         # instantiate BACK button
         self.back_button = Button(x_offset2+950, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
         self.back_button_text = Text('Back', x_offset2+1050, y_offset2+43, 30, BLACK)
@@ -82,8 +85,11 @@ class Pitstop:
             self.save_button.draw(self.game.screen)
             self.save_button_text.draw(self.game.screen)
             # draw STRANGER button
-            self.options_button.draw(self.game.screen)
-            self.options_button_text.draw(self.game.screen)
+            self.stranger_button.draw(self.game.screen)
+            self.stranger_button_text.draw(self.game.screen)
+            # draw JOBS button
+            self.jobs_button.draw(self.game.screen)
+            self.jobs_button_text.draw(self.game.screen)
 
             # draw usernames
             self.u1_text.draw(self.game.screen)
@@ -113,6 +119,9 @@ class Pitstop:
         # catch REST button click
         # catch MEDKIT button click
         # catch STRANGER button click
+        self.stranger_button.change_menu(event, mx, my, "stranger")
+        # catch JOBS button click
+        self.jobs_button.change_menu(event, mx, my, "jobs")
 
         # catch UI changes
         self.party_button.change_ui(event, mx, my, "pitstop", "party")

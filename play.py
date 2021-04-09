@@ -53,8 +53,7 @@ class Play:
         self.miles_left_text = Text('Distance to Buffalo: {} miles'.format(self.game.miles_left), stat_x, stat_y+80, 27, WHITE)
         self.traveled_text = Text('Miles Traveled: {} miles'.format(self.game.traveled), stat_x+37, stat_y+120, 27, WHITE)
 
-        # PITSTOP
-            # button
+        # PITSTOP button
         self.pitstop_button = Button(button_x, button_y+380, 200, 70, LIGHT_GRAY, False, self.game)
         self.pitstop_button_text = Text('Pitstop', button_x+100, button_y+420, 30, BLACK)
 
@@ -133,15 +132,18 @@ class Play:
             self.stats_button.color = LIGHT_GRAY
             self.pitstop_button.color = DARK_GRAY
 
-
     def catch_actions(self, event, mx, my):
         # if travelling (left click)
+        x = 0
+        y = 60
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
-            # update state
-            self.game.fuel -= 1
-            self.game.food -= (self.game.alive * 10)
-            self.game.miles_left -= 10
-            self.game.traveled += 10
+            if x < mx < x + self.game.width:
+                if y < my < y + 400:
+                    # update state
+                    self.game.fuel -= 1
+                    self.game.food -= (self.game.alive * 10)
+                    self.game.miles_left -= 10
+                    self.game.traveled += 10
 
         # catch PAUSE button clicks
         self.pause_button.change_menu(event, mx, my, "pause")
