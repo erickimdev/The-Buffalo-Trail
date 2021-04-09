@@ -67,4 +67,3 @@ class TalkToStranger:
 
         # catch back button click
         self.back_button.change_menu(event, mx, my, "pitstop")
-  
