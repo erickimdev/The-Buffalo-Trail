@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from colors import *
 from text import *
-import os
 
 class Healthbar:
     def __init__(self, game, x, y, player):

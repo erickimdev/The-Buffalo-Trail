@@ -24,10 +24,23 @@ class Pitstop:
         self.options_button_text = Text('Stranger', x_offset+100, y_offset+320, 30, BLACK)
 
         x_offset2 = 0
-        y_offset2 = 630
+        y_offset2 = 640
+        # instantiate PARTY button
+        self.party_button = Button(x_offset2+70, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
+        self.party_button_text = Text('Party', x_offset2+170, y_offset2+43, 30, BLACK)
+        # instantiate SUPPLIES button
+        self.supplies_button = Button(x_offset2+340, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
+        self.supplies_button_text = Text('Supplies', x_offset2+440, y_offset2+43, 30, BLACK)
         # instantiate BACK button
         self.back_button = Button(x_offset2+950, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
         self.back_button_text = Text('Back', x_offset2+1050, y_offset2+43, 30, BLACK)
+
+        stat_x = 800
+        stat_y = 300
+        self.supply_count = Text('Supply Count', stat_x+90, stat_y-60, 35, WHITE)
+        self.fuel_text = Text('Fuel: {}'.format(self.game.fuel), stat_x+89, stat_y, 27, WHITE)
+        self.food_text = Text('Food: {}'.format(self.game.food), stat_x+100, stat_y+40, 27, WHITE)
+        self.money_text = Text('Money: {}'.format(self.game.money), stat_x+104, stat_y+80, 27, WHITE)
 
         # usernames
         user_x = 800
@@ -44,40 +57,66 @@ class Pitstop:
         self.u4_health = Healthbar(self.game, user_x+105, user_y+143, "u4")
 
     def draw_screen(self):
-        # draw campfire
-        self.game.screen.blit(self.campfire, (700,275))
-
-        # draw REST button
-        self.resume_button.draw(self.game.screen)
-        self.resume_button_text.draw(self.game.screen)
-        # draw MEDKIT button
-        self.save_button.draw(self.game.screen)
-        self.save_button_text.draw(self.game.screen)
-        # draw STRANGER button
-        self.options_button.draw(self.game.screen)
-        self.options_button_text.draw(self.game.screen)
-
+        # draw PARTY button
+        self.party_button.draw(self.game.screen)
+        self.party_button_text.draw(self.game.screen)
+        # draw SUPPLIES button
+        self.supplies_button.draw(self.game.screen)
+        self.supplies_button_text.draw(self.game.screen)
         # draw BACK button
         self.back_button.draw(self.game.screen)
         self.back_button_text.draw(self.game.screen)
 
-        # draw usernames
-        self.u1_text.draw(self.game.screen)
-        self.u2_text.draw(self.game.screen)
-        self.u3_text.draw(self.game.screen)
-        self.u4_text.draw(self.game.screen)
+        if self.game.pitstop_menu == "party":
+            # shade buttons appropriately
+            self.party_button.color = DARK_GRAY
+            self.supplies_button.color = LIGHT_GRAY
 
-        # draw health bars
-        self.u1_health.draw(self.game.screen)
-        self.u2_health.draw(self.game.screen)
-        self.u3_health.draw(self.game.screen)
-        self.u4_health.draw(self.game.screen)
+            # draw campfire
+            self.game.screen.blit(self.campfire, (700,275))
 
+            # draw REST button
+            self.resume_button.draw(self.game.screen)
+            self.resume_button_text.draw(self.game.screen)
+            # draw MEDKIT button
+            self.save_button.draw(self.game.screen)
+            self.save_button_text.draw(self.game.screen)
+            # draw STRANGER button
+            self.options_button.draw(self.game.screen)
+            self.options_button_text.draw(self.game.screen)
+
+            # draw usernames
+            self.u1_text.draw(self.game.screen)
+            self.u2_text.draw(self.game.screen)
+            self.u3_text.draw(self.game.screen)
+            self.u4_text.draw(self.game.screen)
+
+            # draw health bars
+            self.u1_health.draw(self.game.screen)
+            self.u2_health.draw(self.game.screen)
+            self.u3_health.draw(self.game.screen)
+            self.u4_health.draw(self.game.screen)
+
+        elif self.game.pitstop_menu == "supplies":
+            # shade buttons appropriately
+            self.party_button.color = LIGHT_GRAY
+            self.supplies_button.color = DARK_GRAY
+
+            # draw "Supply Count" Text
+            self.supply_count.draw(self.game.screen)
+            # draw supplies count
+            self.fuel_text.draw(self.game.screen)
+            self.food_text.draw(self.game.screen)
+            self.money_text.draw(self.game.screen)
 
     def catch_actions(self, event, mx, my):
         # catch REST button click
         # catch MEDKIT button click
         # catch STRANGER button click
+
+        # catch UI changes
+        self.party_button.change_ui(event, mx, my, "pitstop", "party")
+        self.supplies_button.change_ui(event, mx, my, "pitstop", "supplies")
 
         # catch BACK button click
         self.back_button.change_menu(event, mx, my, "play")

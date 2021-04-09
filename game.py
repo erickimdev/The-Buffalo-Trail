@@ -26,6 +26,8 @@ class Game:
         # GAMEPLAY
             # current button selected (health, stats, pitstop)
         self.button_selected = 'health'
+            # current pitstop menu (party, car, supplies)
+        self.pitstop_menu = 'party'
             # car/player healths
         self.alive = 4
         self.car_health = 100
@@ -34,10 +36,12 @@ class Game:
         self.u3_health = 100
         self.u4_health = 10
             # stats
-        self.fuel = 40 #gallons
-        self.food = 500 #oz
         self.traveled = 0 #miles
         self.miles_left = 400 #miles
+            # supplies
+        self.fuel = 20 #gallons
+        self.food = 500 #oz
+        self.money = 1000 #dollars
 
         # instantiate game's menu
         self.main_menu = mainMenu.MainMenu(self) # "main"
@@ -49,7 +53,7 @@ class Game:
         self.save_menu = save_loadMenu.SaveMenu(self) # "save"
         self.pitstop = pitstop.Pitstop(self) # "pitstop"
         # set current menu state to main menu (the string is the one you change)
-        self.menu_state = "pitstop"
+        self.menu_state = "play"
         self.curr_menu = self.main_menu
 
         # check if the game is paused

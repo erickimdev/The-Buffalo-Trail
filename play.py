@@ -3,7 +3,6 @@ from pygame.locals import *
 from button import *
 from text import *
 from healthbar import *
-import time
 
 class Play:
     def __init__(self, game):
@@ -21,15 +20,15 @@ class Play:
         self.pause_button_text = Text('II', 29, 29, 27, BLACK)
 
         # coord offsets
-        button_x = 1050
-        button_y = 250
+        button_x = 1055
+        button_y = 255
         # HEALTH
             # button
         self.health_button = Button(button_x, button_y+210, 200, 70, LIGHT_GRAY, False, self.game)
         self.health_button_text = Text('Health', button_x+100, button_y+250, 30, BLACK)
             # usernames
         user_x = 400
-        user_y = 520
+        user_y = 510
         self.car_text = Text('BMW X6', user_x, user_y, 27, WHITE)
         self.u1_text = Text('User 1', user_x, user_y+40, 27, WHITE)
         self.u2_text = Text('User 2', user_x, user_y+80, 27, WHITE)
@@ -62,8 +61,17 @@ class Play:
     def draw_screen(self):
         # draw instructions
         self.click_anywhere.draw(self.game.screen)
+        # draw light blue backdrop
+        pygame.draw.rect(self.game.screen, (112, 128, 144), (0, 450, self.game.width, 500), 0)
+        # draw road
+        pygame.draw.rect(self.game.screen, WHITE, (0, 310, self.game.width, 7), 0)
+        pygame.draw.rect(self.game.screen, WHITE, (0, 380, self.game.width, 7), 0)
+        ct = 0
+        for i in range(20):
+            pygame.draw.rect(self.game.screen, WHITE, (ct*100, 345, 50, 7), 0)
+            ct += 1
         # draw car
-        self.game.screen.blit(self.car, (950,250))
+        self.game.screen.blit(self.car, (930, 233))
 
         # draw PAUSE button
         self.pause_button.draw(self.game.screen)
@@ -139,9 +147,9 @@ class Play:
         self.pause_button.change_menu(event, mx, my, "pause")
 
         # catch UI changes
-        self.health_button.change_ui(event, mx, my, "health")
-        self.stats_button.change_ui(event, mx, my, "stats")
-        self.pitstop_button.change_ui(event, mx , my, "pitstop")
+        self.health_button.change_ui(event, mx, my, "gameplay", "health")
+        self.stats_button.change_ui(event, mx, my, "gameplay", "stats")
+        self.pitstop_button.change_ui(event, mx , my, "gameplay", "pitstop")
 
         # press esc key to PAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
