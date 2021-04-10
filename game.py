@@ -11,9 +11,9 @@ from menus import pitstop
 
 from menus import jobs
 from menus import talkToStranger
-from strangers import stranger1
-from strangers import stranger2
-from strangers import stranger3
+from Strangers import stranger1
+from Strangers import stranger2
+from Strangers import stranger3
 
 class Game:
     def __init__(self):
@@ -24,7 +24,7 @@ class Game:
         self.width, self.height = 1280, 720
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("The Buffalo Trail - Created by Pythoneers")
-
+        self.prev_state = "pitstop"
         # set difficulty - easy, medium, hard
         self.difficulty = "medium"
 
@@ -117,6 +117,8 @@ class Game:
 
         # if inner menu state is Pitstop
         elif self.menu_state == "pitstop":
+            if self.prev_state == "jobs":
+                self.prev_state = "pitstop"
             self.curr_menu = self.pitstop
 
         # if inner menu state is LoadMenu
@@ -131,6 +133,9 @@ class Game:
             self.curr_menu = self.save_menu
             self.paused = True
         elif self.menu_state == "jobs":
+            if self.prev_state == "pitstop":
+                self.jobs_menu = jobs.Jobs(self)
+                self.prev_state = "jobs"
             self.curr_menu = self.jobs_menu
 
         # if inner menu state is talkToStranger
