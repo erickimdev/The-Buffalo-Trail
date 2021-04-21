@@ -117,7 +117,9 @@ class Pitstop:
 
     def catch_actions(self, event, mx, my):
         # catch REST button click
+        self.resume_button.rest(event, mx, my)
         # catch MEDKIT button click
+        self.save_button.medkit(event, mx, my)
         # catch STRANGER button click
         self.stranger_button.change_menu(event, mx, my, "stranger")
         # catch JOBS button click
@@ -129,6 +131,7 @@ class Pitstop:
 
         # catch BACK button click
         self.back_button.change_menu(event, mx, my, "play")
+
 
         # press esc key to UNPAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
