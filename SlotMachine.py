@@ -2,6 +2,8 @@ import pygame
 import numpy as np
 from colors import *
 
+#Have to be merged to our project
+
 class IconLocation(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y, icon):
         super().__init__()
