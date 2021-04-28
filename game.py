@@ -40,6 +40,7 @@ class Game:
         self.u2_health = 80
         self.u3_health = 50
         self.u4_health = 60
+        self.medkits = 10
             # stats
         self.traveled = 0 #miles
         self.miles_left = 400 #miles

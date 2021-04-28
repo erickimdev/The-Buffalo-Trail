@@ -327,7 +327,7 @@ class Button:
 
             f.close()
 
-    def medkit(self, event, mx, my):
+    def medkit(self, event, mx, my, text):
         # heal lowest health person -> change item system later on
         # prevents using a medkit if everyone is already fully healed or that there is no medkit anymore
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
@@ -338,6 +338,8 @@ class Button:
                 healtharr = [self.game.u1_health, self.game.u2_health, self.game.u3_health, self.game.u4_health]
                 if min(healtharr) != 100:
                     lowest_heath_index = healtharr.index(min(healtharr))
+                    self.game.medkits -=1
+                    text.text = "Medkit: " + str(self.game.medkits)
                     if lowest_heath_index == 0:
                         if self.game.u1_health > 80:
                             self.game.u1_health = 100
@@ -358,32 +360,5 @@ class Button:
                             self.game.u4_health = 100
                         else:
                             self.game.u4_health += 20
-
-                pygame.display.update()
-
-    def rest(self, event, mx, my):
-        # heals all members
-        if event.type == MOUSEBUTTONDOWN and event.button == 1:
-            # if mouse is above button
-            if self.hovers(mx, my):
-                # sfx
-                self.click_down.play()
-                healtharr = [self.game.u1_health, self.game.u2_health, self.game.u3_health, self.game.u4_health]
-                if self.game.u1_health > 80:
-                    self.game.u1_health = 100
-                else:
-                    self.game.u1_health += 20
-                if self.game.u2_health > 80:
-                    self.game.u2_health = 100
-                else:
-                    self.game.u2_health += 20
-                if self.game.u3_health > 80:
-                    self.game.u3_health = 100
-                else:
-                    self.game.u3_health += 20
-                if self.game.u4_health > 80:
-                    self.game.u4_health = 100
-                else:
-                    self.game.u4_health += 20
 
                 pygame.display.update()
