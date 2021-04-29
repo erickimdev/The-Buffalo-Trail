@@ -1,6 +1,7 @@
 import random
 import pygame
 
+
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8,
@@ -8,9 +9,19 @@ values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eig
 
 playing = True
 
+#pygame.init()
+#width  = 1280
+#height = 720
+#screen = pygame.display.set_mode((width, height))
+#pygame.display.set_caption("Black Jack")
+#logo = pygame.image.load('assets/ace_of_spades.png')
+#pygame.display.set_icon(logo)
+
+#screen.fill(DARK_GRAY)
+
+#pc = pygame.font.SysFont("yo", 70)
+
 # CLASSES
-
-
 class Card:  # Creates all the cards
 
     def __init__(self, suit, rank):
@@ -156,8 +167,7 @@ def push(player, dealer):
 # Gameplay!
 
 while True:
-    print("Welcome to BlackJack!")
-
+   
     # create an shuffle deck
     deck = Deck()
     deck.shuffle()
@@ -206,8 +216,10 @@ while True:
 
         if player_hand.value > 21:
             player_busts(player_hand, dealer_hand, player_chips)
-
-    print("\nPlayer's winnings stand at", player_chips.total)
+        
+    winning_stand = pc.render("Player's winnings stand at" +player_chips.total, True, (0, 0, 0))
+    screen.blit(winning_stand, (1050, 620))
+   # print("\nPlayer's winnings stand at", player_chips.total)
 
     new_game = input("\nWould you like to play again? Enter 'y' or 'n': ")
     if new_game[0].lower() == 'y':
