@@ -8,6 +8,8 @@ from menus import optionsMenu
 from menus import pauseMenu
 from menus import save_loadMenu
 from menus import pitstop
+from menus import slotMachine
+from menus import blackJack
 
 from menus import jobs
 from menus import talkToStranger
@@ -59,6 +61,8 @@ class Game:
         self.pitstop = pitstop.Pitstop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
+        self.slotMachine_menu = slotMachine.SlotMachine(self) # "slotmachine"
+        self.blackjack_menu = blackJack.BlackJack(self) # "blackjack"
         self.Firststranger = stranger1.Stranger(self)
         self.Secondstranger = stranger2.Stranger(self)
         self.Thirdstranger = stranger3.Stranger(self)
@@ -120,6 +124,10 @@ class Game:
             if self.prev_state == "jobs":
                 self.prev_state = "pitstop"
             self.curr_menu = self.pitstop
+        elif self.menu_state == "slotmachine":
+            self.curr_menu = self.slotMachine_menu
+        elif self.menu_state == "blackjack":
+            self.curr_menu = self.blackjack_menu
 
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":

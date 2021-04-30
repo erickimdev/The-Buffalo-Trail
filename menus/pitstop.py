@@ -38,6 +38,17 @@ class Pitstop:
         self.back_button = Button(x_offset2+950, y_offset2, 200, 80, LIGHT_GRAY, False, self.game)
         self.back_button_text = Text('Back', x_offset2+1050, y_offset2+43, 30, BLACK)
 
+        x_offset3 = 260
+        y_offset3 = 85
+        # instantiate GET MONEY text
+        self.getmoney_text = Text('Get Money', x_offset3+100, y_offset3+130, 35, WHITE)
+        # instantiate BLACKJACK button
+        self.blackjack_button = Button(x_offset3, y_offset3+180, 200, 70, LIGHT_GRAY, False, self.game)
+        self.blackjack_button_text = Text('Blackjack', x_offset3+103, y_offset3+217, 23, BLACK)
+        # instantiate SLOT MAcHINE button
+        self.slotmachine_button = Button(x_offset3, y_offset3+280, 200, 70, LIGHT_GRAY, False, self.game)
+        self.slotmachine_button_text = Text('Slot Machine', x_offset3+100, y_offset3+320, 22, BLACK)
+
         stat_x = 800
         stat_y = 300
         self.supply_count = Text('Supply Count', stat_x+90, stat_y-60, 35, WHITE)
@@ -108,11 +119,24 @@ class Pitstop:
             self.party_button.color = LIGHT_GRAY
             self.supplies_button.color = DARK_GRAY
 
+            # GET MONEY text
+            self.getmoney_text.draw(self.game.screen)
+
+            # draw BLACKJACK button
+            self.blackjack_button.draw(self.game.screen)
+            self.blackjack_button_text.draw(self.game.screen)
+            # draw SLOT MACHINE button
+            self.slotmachine_button.draw(self.game.screen)
+            self.slotmachine_button_text.draw(self.game.screen)
+
             # draw "Supply Count" Text
             self.supply_count.draw(self.game.screen)
             # draw supplies count
+            self.fuel_text.text = 'Fuel: {}'.format(self.game.fuel)    # fuel
             self.fuel_text.draw(self.game.screen)
+            self.food_text.text = 'Food: {}'.format(self.game.food)    # food
             self.food_text.draw(self.game.screen)
+            self.money_text.text = 'Money: {}'.format(self.game.money)        # money
             self.money_text.draw(self.game.screen)
 
     def catch_actions(self, event, mx, my):
@@ -122,6 +146,11 @@ class Pitstop:
         self.stranger_button.change_menu(event, mx, my, "stranger")
         # catch JOBS button click
         self.jobs_button.change_menu(event, mx, my, "jobs")
+
+        # catch SLOT MACHINE play
+        self.slotmachine_button.change_menu(event, mx, my, "slotmachine")
+        # catch BLACKJACK play
+        self.blackjack_button.change_menu(event, mx, my, "blackjack")
 
         # catch UI changes
         self.party_button.change_ui(event, mx, my, "pitstop", "party")
