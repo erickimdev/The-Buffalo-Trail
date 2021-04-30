@@ -14,8 +14,8 @@ class Pitstop:
         x_offset = 100
         y_offset = 50
         # instantiate REST button
-        self.resume_button = Button(x_offset, y_offset+80, 200, 70, LIGHT_GRAY, False, self.game)
-        self.resume_button_text = Text('Rest', x_offset+100, y_offset+115, 30, BLACK)
+        self.rest_button = Button(x_offset, y_offset+80, 200, 70, LIGHT_GRAY, False, self.game)
+        self.rest_button_text = Text('Rest', x_offset+100, y_offset+115, 30, BLACK)
         # instantiate MEDKIT button
         self.save_button = Button(x_offset, y_offset+180, 200, 70, LIGHT_GRAY, False, self.game)
         self.save_button_text = Text('Medkit', x_offset+100, y_offset+217, 30, BLACK)
@@ -23,7 +23,7 @@ class Pitstop:
         self.stranger_button = Button(x_offset, y_offset+280, 200, 70, LIGHT_GRAY, False, self.game)
         self.stranger_button_text = Text('Strangers', x_offset+100, y_offset+320, 27, BLACK)
         # instantiate JOBS button
-        self.jobs_button = Button(x_offset, y_offset+380, 200, 80, LIGHT_GRAY, False, self.game)
+        self.jobs_button = Button(x_offset, y_offset+380, 200, 70, LIGHT_GRAY, False, self.game)
         self.jobs_button_text = Text('Jobs', x_offset+100, y_offset+420, 30, BLACK)
 
         x_offset2 = 0
@@ -45,10 +45,10 @@ class Pitstop:
         self.food_text = Text('Food: {}'.format(self.game.food), stat_x+100, stat_y+40, 27, WHITE)
         self.money_text = Text('Money: {}'.format(self.game.money), stat_x+104, stat_y+80, 27, WHITE)
 
-        # usernames
+        # usernames/healthbars
         user_x = 800
         user_y = 30
-        self.car_text = Text('Kia SUV', user_x, user_y, 27, WHITE)
+        self.car_text = Text('BMW X6', user_x, user_y, 27, WHITE)
         self.u1_text = Text('User 1', user_x, user_y+40, 27, WHITE)
         self.u2_text = Text('User 2', user_x, user_y+80, 27, WHITE)
         self.u3_text = Text('User 3', user_x, user_y+120, 27, WHITE)
@@ -79,8 +79,8 @@ class Pitstop:
             self.game.screen.blit(self.campfire, (700,275))
 
             # draw REST button
-            self.resume_button.draw(self.game.screen)
-            self.resume_button_text.draw(self.game.screen)
+            self.rest_button.draw(self.game.screen)
+            self.rest_button_text.draw(self.game.screen)
             # draw MEDKIT button
             self.save_button.draw(self.game.screen)
             self.save_button_text.draw(self.game.screen)
@@ -96,7 +96,6 @@ class Pitstop:
             self.u2_text.draw(self.game.screen)
             self.u3_text.draw(self.game.screen)
             self.u4_text.draw(self.game.screen)
-
             # draw health bars
             self.u1_health.draw(self.game.screen)
             self.u2_health.draw(self.game.screen)
@@ -117,6 +116,7 @@ class Pitstop:
 
     def catch_actions(self, event, mx, my):
         # catch REST button click
+        self.rest_button.change_menu(event, mx, my, "rest")
         # catch MEDKIT button click
         # catch STRANGER button click
         self.stranger_button.change_menu(event, mx, my, "stranger")
