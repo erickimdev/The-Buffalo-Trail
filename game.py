@@ -8,7 +8,7 @@ from menus import optionsMenu
 from menus import pauseMenu
 from menus import save_loadMenu
 from menus import pitstop
-
+from menus import rest
 from menus import jobs
 from menus import talkToStranger
 from Strangers import stranger1
@@ -31,15 +31,16 @@ class Game:
         # GAMEPLAY
             # current button selected (health, stats, pitstop)
         self.button_selected = 'health'
+        self.time = 5   # 0 to 24 (military time)
             # current pitstop menu (party, car, supplies)
         self.pitstop_menu = 'party'
             # car/player healths
         self.alive = 4
-        self.car_health = 100
-        self.u1_health = 100
-        self.u2_health = 80
-        self.u3_health = 50
-        self.u4_health = 60
+        self.car_health = 9
+        self.u1_health = 10
+        self.u2_health = 8
+        self.u3_health = 5
+        self.u4_health = 6
         self.medkits = 10
             # stats
         self.traveled = 0 #miles
@@ -57,12 +58,13 @@ class Game:
         self.load_menu = save_loadMenu.LoadMenu(self) # "load"
         self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self) # "save_confirm"
         self.save_menu = save_loadMenu.SaveMenu(self) # "save"
+        self.rest = rest.Rest(self) # "rest"
         self.pitstop = pitstop.PitStop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
-        self.Firststranger = stranger1.Stranger(self)
-        self.Secondstranger = stranger2.Stranger(self)
-        self.Thirdstranger = stranger3.Stranger(self)
+        self.first_stranger = stranger1.Stranger(self)
+        self.second_stranger = stranger2.Stranger(self)
+        self.third_stranger = stranger3.Stranger(self)
 
         # set current menu state to main menu (the string is the one you change)
         self.menu_state = "main"
@@ -121,6 +123,8 @@ class Game:
             if self.prev_state == "jobs":
                 self.prev_state = "pitstop"
             self.curr_menu = self.pitstop
+        elif self.menu_state == "rest":
+            self.curr_menu = self.rest
 
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":
@@ -145,15 +149,15 @@ class Game:
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger1":
-            self.curr_menu = self.Firststranger
+            self.curr_menu = self.first_stranger
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger2":
-            self.curr_menu = self.Secondstranger
+            self.curr_menu = self.second_stranger
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger3":
-            self.curr_menu = self.Thirdstranger
+            self.curr_menu = self.third_stranger
             self.paused = True
 
 

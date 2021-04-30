@@ -261,6 +261,53 @@ class Button:
                         elif change == "supplies":
                             self.game.pitstop_menu = "supplies"
 
+    def rest(self, event, mx, my, hours):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+                # set button dark (currently clicked)
+                self.color = DARK_GRAY
+                # self reference of if it's clicked
+                self.clicked = True
+
+        # if left click lifted
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            # if self reference clicked is TRUE
+            if self.clicked:
+                # if mouse currently above button
+                if self.hovers(mx, my):
+                    # sfx
+                    self.click_up.play()
+                    # advance in-game time
+                    self.game.time += hours
+                    # increase player's health
+                    self.game.u1_health = min(10, self.game.u1_health + hours)
+                    self.game.u2_health = min(10, self.game.u2_health + hours)
+                    self.game.u3_health = min(10, self.game.u3_health + hours)
+                    self.game.u4_health = min(10, self.game.u4_health + hours)
+
+                # now unclicked
+                self.clicked = False
+                # clicked button turns light gray (unselected)
+                self.color = LIGHT_GRAY
+
+        # mouse movement action
+        if event.type == MOUSEMOTION:
+            # if mouse currently above button
+            if self.hovers(mx, my):
+                # if just hovering (no click), turn gray
+                if not self.clicked:
+                    self.color = GRAY
+                # if hovering AND clicked, turn dark gray (selected)
+                else:
+                    self.color = DARK_GRAY
+            # untouched buttons should always be gray
+            else:
+                self.color = LIGHT_GRAY
+
     def saveGame(self):
         f = open("save.txt", "w")
 
