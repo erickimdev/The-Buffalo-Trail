@@ -9,6 +9,9 @@ from menus import pauseMenu
 from menus import save_loadMenu
 from menus import pitstop
 from menus import rest
+from menus import slotMachine
+from menus import blackJack
+
 from menus import jobs
 from menus import talkToStranger
 from Strangers import stranger1
@@ -62,9 +65,11 @@ class Game:
         self.pitstop = pitstop.PitStop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
-        self.first_stranger = stranger1.Stranger(self)
-        self.second_stranger = stranger2.Stranger(self)
-        self.third_stranger = stranger3.Stranger(self)
+        self.slotMachine_menu = slotMachine.SlotMachine(self) # "slotmachine"
+        self.blackjack_menu = blackJack.BlackJack(self) # "blackjack"
+        self.Firststranger = stranger1.Stranger(self)
+        self.Secondstranger = stranger2.Stranger(self)
+        self.Thirdstranger = stranger3.Stranger(self)
 
         # set current menu state to main menu (the string is the one you change)
         self.menu_state = "main"
@@ -125,6 +130,10 @@ class Game:
             self.curr_menu = self.pitstop
         elif self.menu_state == "rest":
             self.curr_menu = self.rest
+        elif self.menu_state == "slotmachine":
+            self.curr_menu = self.slotMachine_menu
+        elif self.menu_state == "blackjack":
+            self.curr_menu = self.blackjack_menu
 
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":
