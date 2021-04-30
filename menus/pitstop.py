@@ -1,6 +1,7 @@
 import pygame
 from text import *
 from button import *
+from healthbar import *
 
 class PitStop:
     def __init__(self, game):

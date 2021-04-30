@@ -57,7 +57,7 @@ class Game:
         self.load_menu = save_loadMenu.LoadMenu(self) # "load"
         self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self) # "save_confirm"
         self.save_menu = save_loadMenu.SaveMenu(self) # "save"
-        self.pitstop = pitstop.Pitstop(self) # "pitstop"
+        self.pitstop = pitstop.PitStop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
         self.Firststranger = stranger1.Stranger(self)
