@@ -79,7 +79,7 @@ icons= ["Jackpot-7", "Bananas", "Cherry", "Diamond", "Grapes"]
 icons_proba = [0.1, 0.25, 0.25, 0.25, 0.15]
 icon_reward_dict = {"Jackpot-7": 100, "Bananas": 30, "Cherry" : 35, "Diamond":60, "Grapes": 30}
 
-total_cash = 500 #as of now
+total_cash = 1000 #as of now
 
 bananaimg = pygame.image.load('assets/Bananas.png')
 bananaimg = pygame.transform.scale(bananaimg, (130, 140)) 
