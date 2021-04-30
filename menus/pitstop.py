@@ -1,9 +1,8 @@
 import pygame
 from text import *
 from button import *
-from healthbar import *
 
-class Pitstop:
+class PitStop:
     def __init__(self, game):
         self.game = game
 
@@ -131,7 +130,6 @@ class Pitstop:
 
         # catch BACK button click
         self.back_button.change_menu(event, mx, my, "play")
-
 
         # press esc key to UNPAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
