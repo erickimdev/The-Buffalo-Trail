@@ -3,7 +3,7 @@ from text import *
 from button import *
 from healthbar import *
 
-class Pitstop:
+class PitStop:
     def __init__(self, game):
         self.game = game
 
@@ -25,7 +25,8 @@ class Pitstop:
         # instantiate JOBS button
         self.jobs_button = Button(x_offset, y_offset+380, 200, 70, LIGHT_GRAY, False, self.game)
         self.jobs_button_text = Text('Jobs', x_offset+100, y_offset+420, 30, BLACK)
-
+        # instantiate  medkit ui
+        self.medkit_text = Text('Medkit: '+str(game.medkits), 500, 50, 30, WHITE)
         x_offset2 = 0
         y_offset2 = 640
         # instantiate PARTY button
@@ -69,6 +70,7 @@ class Pitstop:
         # draw BACK button
         self.back_button.draw(self.game.screen)
         self.back_button_text.draw(self.game.screen)
+        self.medkit_text.draw(self.game.screen)
 
         if self.game.pitstop_menu == "party":
             # shade buttons appropriately
@@ -118,6 +120,7 @@ class Pitstop:
         # catch REST button click
         self.rest_button.change_menu(event, mx, my, "rest")
         # catch MEDKIT button click
+        self.save_button.medkit(event, mx, my, self.medkit_text)
         # catch STRANGER button click
         self.stranger_button.change_menu(event, mx, my, "stranger")
         # catch JOBS button click

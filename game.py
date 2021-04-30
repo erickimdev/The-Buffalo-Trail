@@ -41,6 +41,7 @@ class Game:
         self.u2_health = 8
         self.u3_health = 5
         self.u4_health = 6
+        self.medkits = 10
             # stats
         self.traveled = 0 #miles
         self.miles_left = 400 #miles
@@ -57,8 +58,8 @@ class Game:
         self.load_menu = save_loadMenu.LoadMenu(self) # "load"
         self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self) # "save_confirm"
         self.save_menu = save_loadMenu.SaveMenu(self) # "save"
-        self.pitstop = pitstop.Pitstop(self) # "pitstop"
         self.rest = rest.Rest(self) # "rest"
+        self.pitstop = pitstop.PitStop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
         self.first_stranger = stranger1.Stranger(self)
