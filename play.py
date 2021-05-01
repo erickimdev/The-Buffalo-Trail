@@ -50,8 +50,12 @@ class Play:
         stat_y = 527
         self.fuel_text = Text('Fuel: {} gallons'.format(self.game.fuel), stat_x+153, stat_y, 27, WHITE)
         self.food_text = Text('Food: {} oz'.format(self.game.food), stat_x+117, stat_y+40, 27, WHITE)
-        self.miles_left_text = Text('Distance to Buffalo: {} miles'.format(self.game.miles_left), stat_x, stat_y+80, 27, WHITE)
-        self.traveled_text = Text('Miles Traveled: {} miles'.format(self.game.traveled), stat_x+37, stat_y+120, 27, WHITE)
+        self.money_text = Text('Money: {} dollars'.format(self.game.money), stat_x+166, stat_y+80, 27, WHITE)
+        self.medkits_text = Text('Medkits: {} packs'.format(self.game.medkits), stat_x+106, stat_y+120, 27, WHITE)
+
+        # DISTANCE text
+        self.miles_left_text = Text('Distance to Buffalo: {} miles'.format(self.game.miles_left), self.game.width/2, 90, 12, WHITE)
+        self.traveled_text = Text('Miles Traveled: {} miles'.format(self.game.traveled),          self.game.width/2, 108, 12, WHITE)
 
         # PITSTOP button
         self.pitstop_button = Button(button_x, button_y+380, 200, 70, LIGHT_GRAY, False, self.game)
@@ -85,6 +89,12 @@ class Play:
         self.pitstop_button.draw(self.game.screen)
         self.pitstop_button_text.draw(self.game.screen)
 
+        # draw DISTANCE texts
+        self.miles_left_text.text = 'Distance to Buffalo: {} miles'.format(self.game.miles_left)
+        self.traveled_text.text = 'Miles Traveled: {} miles'.format(self.game.traveled)
+        self.miles_left_text.draw(self.game.screen)
+        self.traveled_text.draw(self.game.screen)
+
         # HEALTH selected
         if self.game.button_selected == 'health':
             # shade buttons appropriately
@@ -106,7 +116,7 @@ class Play:
             self.u3_health.draw(self.game.screen)
             self.u4_health.draw(self.game.screen)
 
-    # STATS selected
+        # STATS selected
         elif self.game.button_selected == 'stats':
             # shade buttons appropriately
             self.health_button.color = LIGHT_GRAY
@@ -116,14 +126,12 @@ class Play:
             # update stats
             self.fuel_text.text = 'Fuel: {} gallons'.format(self.game.fuel)
             self.food_text.text = 'Food: {} oz'.format(self.game.food)
-            self.miles_left_text.text = 'Distance to Buffalo: {} miles'.format(self.game.miles_left)
-            self.traveled_text.text = 'Miles Traveled: {} miles'.format(self.game.traveled)
 
             # draw stats
             self.fuel_text.draw(self.game.screen)
             self.food_text.draw(self.game.screen)
-            self.miles_left_text.draw(self.game.screen)
-            self.traveled_text.draw(self.game.screen)
+            self.money_text.draw(self.game.screen)
+            self.medkits_text.draw(self.game.screen)
 
         # pitstop selected
         elif self.game.button_selected == 'pitstop':
@@ -133,17 +141,22 @@ class Play:
             self.pitstop_button.color = DARK_GRAY
 
     def catch_actions(self, event, mx, my):
+        # game finished
+        if self.game.miles_left == 0:
+            self.game.menu_state = "ending"
+
         # if travelling (left click)
         x = 0
         y = 60
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
-            if x < mx < x + self.game.width:
-                if y < my < y + 400:
-                    # update state
-                    self.game.fuel -= 1
-                    self.game.food -= (self.game.alive * 10)
-                    self.game.miles_left -= 10
-                    self.game.traveled += 10
+            if x < mx < x + self.game.width and y < my < y + 400:
+                if self.game.food >= (self.game.alive * 10):
+                    if self.game.fuel >= 1:
+                        # update stats
+                        self.game.fuel -= 1
+                        self.game.food -= (self.game.alive * 10)
+                        self.game.miles_left -= 10
+                        self.game.traveled += 10
 
         # catch PAUSE button clicks
         self.pause_button.change_menu(event, mx, my, "pause")
@@ -151,7 +164,7 @@ class Play:
         # catch UI changes
         self.health_button.change_ui(event, mx, my, "gameplay", "health")
         self.stats_button.change_ui(event, mx, my, "gameplay", "stats")
-        self.pitstop_button.change_ui(event, mx , my, "gameplay", "pitstop")
+        self.pitstop_button.change_ui(event, mx, my, "gameplay", "pitstop")
 
         # press esc key to PAUSE
         if event.type == pygame.KEYDOWN and event.key == K_ESCAPE:
