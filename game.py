@@ -8,12 +8,18 @@ from menus import optionsMenu
 from menus import pauseMenu
 from menus import save_loadMenu
 from menus import pitstop
+from menus import rest
+from menus import slotMachine
+from menus import blackJack
+from menus import endingMenu
 
 from menus import jobs
 from menus import talkToStranger
 from Strangers import stranger1
 from Strangers import stranger2
 from Strangers import stranger3
+
+run = True
 
 class Game:
     def __init__(self):
@@ -31,15 +37,16 @@ class Game:
         # GAMEPLAY
             # current button selected (health, stats, pitstop)
         self.button_selected = 'health'
+        self.time = 5   # 0 to 24 (military time)
             # current pitstop menu (party, car, supplies)
         self.pitstop_menu = 'party'
             # car/player healths
         self.alive = 4
-        self.car_health = 100
-        self.u1_health = 100
-        self.u2_health = 80
-        self.u3_health = 50
-        self.u4_health = 60
+        self.car_health = 9
+        self.u1_health = 10
+        self.u2_health = 8
+        self.u3_health = 5
+        self.u4_health = 6
         self.medkits = 10
             # stats
         self.traveled = 0 #miles
@@ -57,12 +64,16 @@ class Game:
         self.load_menu = save_loadMenu.LoadMenu(self) # "load"
         self.save_confirmation = save_loadMenu.SaveMenuConfirmation(self) # "save_confirm"
         self.save_menu = save_loadMenu.SaveMenu(self) # "save"
-        self.pitstop = pitstop.Pitstop(self) # "pitstop"
+        self.rest = rest.Rest(self) # "rest"
+        self.pitstop = pitstop.PitStop(self) # "pitstop"
         self.jobs_menu = jobs.Jobs(self) # "jobs"
         self.talk_to_stranger_menu = talkToStranger.TalkToStranger(self) # "stranger"
+        self.slotMachine_menu = slotMachine.SlotMachine(self) # "slotmachine"
+        self.blackjack_menu = blackJack.BlackJack(self) # "blackjack"
         self.Firststranger = stranger1.Stranger(self)
         self.Secondstranger = stranger2.Stranger(self)
         self.Thirdstranger = stranger3.Stranger(self)
+        self.ending_menu = endingMenu.EndingMenu(self) # "ending"
 
         # set current menu state to main menu (the string is the one you change)
         self.menu_state = "main"
@@ -76,7 +87,8 @@ class Game:
         self.music_multiplier = 0.5
 
     def loop(self):
-        while True:
+        run = True
+        while run:
             # set black BG
             self.screen.fill((16,16,16))
 
@@ -89,16 +101,17 @@ class Game:
             # change menu (if applicable)
             self.change_menu()
 
-            for event in pygame.event.get():
-                # click X button to quit
-                if event.type == pygame.QUIT:
-                    pygame.quit()
+            # keep updating display
+            pygame.display.update()
 
+            for event in pygame.event.get():
                 # catch current menu's actions (i.e. mouse click)
                 self.curr_menu.catch_actions(event, mx, my)
 
-            # keep updating display
-            pygame.display.update()
+                # click X button to quit
+                if event.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
 
     def change_menu(self):
         # if inner menu state is MainMenu
@@ -121,6 +134,12 @@ class Game:
             if self.prev_state == "jobs":
                 self.prev_state = "pitstop"
             self.curr_menu = self.pitstop
+        elif self.menu_state == "rest":
+            self.curr_menu = self.rest
+        elif self.menu_state == "slotmachine":
+            self.curr_menu = self.slotMachine_menu
+        elif self.menu_state == "blackjack":
+            self.curr_menu = self.blackjack_menu
 
         # if inner menu state is LoadMenu
         elif self.menu_state == "load":
@@ -129,7 +148,7 @@ class Game:
         elif self.menu_state == "save_confirm":
             self.curr_menu = self.save_confirmation
             self.paused = True
-        # if inner menu state is SaveConfirmation
+        # if inner menu state is Save
         elif self.menu_state == "save":
             self.curr_menu = self.save_menu
             self.paused = True
@@ -145,17 +164,19 @@ class Game:
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger1":
-            self.curr_menu = self.Firststranger
+            self.curr_menu = self.first_stranger
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger2":
-            self.curr_menu = self.Secondstranger
+            self.curr_menu = self.second_stranger
             self.paused = True
         # if inner menu state is talkToStranger
         elif self.menu_state == "stranger3":
-            self.curr_menu = self.Thirdstranger
+            self.curr_menu = self.third_stranger
             self.paused = True
 
+        elif self.menu_state == "ending":
+            self.curr_menu = self.ending_menu
 
 game = Game()
 while True:

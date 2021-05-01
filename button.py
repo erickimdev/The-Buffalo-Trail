@@ -58,15 +58,19 @@ class Button:
                 if self.hovers(mx, my):
                     # sfx
                     self.click_up.play()
-                    # change inner menu state
-                    self.game.menu_state = state
 
+                    # if playing game
+                    if state == "play":
+                        self.reset()
                     # if saving game
-                    if state == "save":
+                    elif state == "save":
                         self.saveGame()
                     # if loading game
                     elif state == "load":
                         self.loadGame()
+
+                    # change inner menu state
+                    self.game.menu_state = state
 
                 # now unclicked
                 self.clicked = False
@@ -207,6 +211,23 @@ class Button:
             else:
                 self.color = LIGHT_GRAY
 
+    def reset(self):
+        # car/player healths
+        self.alive = 4
+        self.car_health = 9
+        self.u1_health = 10
+        self.u2_health = 8
+        self.u3_health = 5
+        self.u4_health = 6
+        self.medkits = 10
+        # stats
+        self.traveled = 0 #miles
+        self.miles_left = 400 #miles
+        # supplies
+        self.fuel = 20 #gallons
+        self.food = 500 #oz
+        self.money = 1000 #dollars
+
     def change_volume(self, event, mx, my, vol, multiplier):
         # if left click
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
@@ -260,6 +281,55 @@ class Button:
                             self.game.pitstop_menu = "party"
                         elif change == "supplies":
                             self.game.pitstop_menu = "supplies"
+                        elif change == "buy":
+                            self.game.pitstop_menu = "buy"
+
+    def rest(self, event, mx, my, hours):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+                # set button dark (currently clicked)
+                self.color = DARK_GRAY
+                # self reference of if it's clicked
+                self.clicked = True
+
+        # if left click lifted
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            # if self reference clicked is TRUE
+            if self.clicked:
+                # if mouse currently above button
+                if self.hovers(mx, my):
+                    # sfx
+                    self.click_up.play()
+                    # advance in-game time
+                    self.game.time += hours
+                    # increase player's health
+                    self.game.u1_health = min(10, self.game.u1_health + hours)
+                    self.game.u2_health = min(10, self.game.u2_health + hours)
+                    self.game.u3_health = min(10, self.game.u3_health + hours)
+                    self.game.u4_health = min(10, self.game.u4_health + hours)
+
+                # now unclicked
+                self.clicked = False
+                # clicked button turns light gray (unselected)
+                self.color = LIGHT_GRAY
+
+        # mouse movement action
+        if event.type == MOUSEMOTION:
+            # if mouse currently above button
+            if self.hovers(mx, my):
+                # if just hovering (no click), turn gray
+                if not self.clicked:
+                    self.color = GRAY
+                # if hovering AND clicked, turn dark gray (selected)
+                else:
+                    self.color = DARK_GRAY
+            # untouched buttons should always be gray
+            else:
+                self.color = LIGHT_GRAY
 
     def saveGame(self):
         f = open("save.txt", "w")
@@ -328,37 +398,122 @@ class Button:
             f.close()
 
     def medkit(self, event, mx, my, text):
-        # heal lowest health person -> change item system later on
-        # prevents using a medkit if everyone is already fully healed or that there is no medkit anymore
+        # if left click
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             # if mouse is above button
             if self.hovers(mx, my):
                 # sfx
                 self.click_down.play()
-                healtharr = [self.game.u1_health, self.game.u2_health, self.game.u3_health, self.game.u4_health]
-                if min(healtharr) != 100:
-                    lowest_heath_index = healtharr.index(min(healtharr))
-                    self.game.medkits -=1
-                    text.text = "Medkit: " + str(self.game.medkits)
-                    if lowest_heath_index == 0:
-                        if self.game.u1_health > 80:
-                            self.game.u1_health = 100
-                        else:
-                            self.game.u1_health += 20
-                    if lowest_heath_index == 1:
-                        if self.game.u2_health > 80:
-                            self.game.u2_health = 100
-                        else:
-                            self.game.u2_health += 20
-                    if lowest_heath_index == 2:
-                        if self.game.u3_health > 80:
-                            self.game.u3_health = 100
-                        else:
-                            self.game.u3_health += 20
-                    if lowest_heath_index == 3:
-                        if self.game.u4_health > 80:
-                            self.game.u4_health = 100
-                        else:
-                            self.game.u4_health += 20
+                # set button dark (currently clicked)
+                self.color = DARK_GRAY
+                # self reference of if it's clicked
+                self.clicked = True
 
-                pygame.display.update()
+        # if left click lifted
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            # if self reference clicked is TRUE
+            if self.clicked:
+                # if mouse currently above button
+                if self.hovers(mx, my):
+                    # sfx
+                    self.click_up.play()
+                    # heal players with medkit
+                    healtharr = [self.game.u1_health, self.game.u2_health, self.game.u3_health, self.game.u4_health]
+                    if min(healtharr) != 10:
+                        lowest_heath_index = healtharr.index(min(healtharr))
+                        self.game.medkits -= 1
+                        text.text = "Medkit: " + str(self.game.medkits)
+                        if lowest_heath_index == 0:
+                            if self.game.u1_health > 8:
+                                self.game.u1_health = 10
+                            else:
+                                self.game.u1_health += 2
+                        if lowest_heath_index == 1:
+                            if self.game.u2_health > 8:
+                                self.game.u2_health = 10
+                            else:
+                                self.game.u2_health += 2
+                        if lowest_heath_index == 2:
+                            if self.game.u3_health > 8:
+                                self.game.u3_health = 10
+                            else:
+                                self.game.u3_health += 2
+                        if lowest_heath_index == 3:
+                            if self.game.u4_health > 8:
+                                self.game.u4_health = 10
+                            else:
+                                self.game.u4_health += 2
+
+                    pygame.display.update()
+                # now unclicked
+                self.clicked = False
+                # clicked button turns light gray (unselected)
+                self.color = LIGHT_GRAY
+
+        # mouse movement action
+        if event.type == MOUSEMOTION:
+            # if mouse currently above button
+            if self.hovers(mx, my):
+                # if just hovering (no click), turn gray
+                if not self.clicked:
+                    self.color = GRAY
+                # if hovering AND clicked, turn dark gray (selected)
+                else:
+                    self.color = DARK_GRAY
+            # untouched buttons should always be gray
+            else:
+                self.color = LIGHT_GRAY
+
+    def purchase(self, event, mx, my, buying):
+        # if left click
+        if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            # if mouse is above button
+            if self.hovers(mx, my):
+                # sfx
+                self.click_down.play()
+                # set button dark (currently clicked)
+                self.color = DARK_GRAY
+                # self reference of if it's clicked
+                self.clicked = True
+
+        # if left click lifted
+        if event.type == MOUSEBUTTONUP and event.button == 1:
+            # if self reference clicked is TRUE
+            if self.clicked:
+                # if mouse currently above button
+                if self.hovers(mx, my):
+                    # sfx
+                    self.click_up.play()
+
+                    # purchase item
+                    if buying == "fuel":
+                        if self.game.money >= 100:
+                            self.game.fuel += 1
+                            self.game.money -= 100
+                    elif buying == "food":
+                        if self.game.money >= 200:
+                            self.game.food += 100
+                            self.game.money -= 200
+                    elif buying == "medkits":
+                        if self.game.money >= 50:
+                            self.game.medkits += 1
+                            self.game.money -= 50
+
+                # now unclicked
+                self.clicked = False
+                # clicked button turns light gray (unselected)
+                self.color = LIGHT_GRAY
+
+        # mouse movement action
+        if event.type == MOUSEMOTION:
+            # if mouse currently above button
+            if self.hovers(mx, my):
+                # if just hovering (no click), turn gray
+                if not self.clicked:
+                    self.color = GRAY
+                # if hovering AND clicked, turn dark gray (selected)
+                else:
+                    self.color = DARK_GRAY
+            # untouched buttons should always be gray
+            else:
+                self.color = LIGHT_GRAY
