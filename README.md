@@ -20,7 +20,14 @@ A modern remake of the 1971 classic The Oregon Trail. Talk to strangers for trav
     
   * Options
     <br> <img class="image" src="https://erickim.dev/wp-content/uploads/2022/03/Options.png" width="600">
+
+  * Pause Screen
+    <br> <img class="image" src="https://erickim.dev/wp-content/uploads/2022/03/Pause.png" width="600">
     
+  * Save Game
+    <br> <img class="image" src="https://erickim.dev/wp-content/uploads/2022/03/Save.png" width="600">
+
+
   * Game Loaded
     <br> <img class="image" src="https://erickim.dev/wp-content/uploads/2022/03/Game-Loaded.png" width="600">
     
